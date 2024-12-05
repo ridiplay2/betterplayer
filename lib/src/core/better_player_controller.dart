@@ -654,7 +654,7 @@ class BetterPlayerController {
     }
 
     await videoPlayerController!
-        .seekTo(moment, forcePauseAfterSeek: !forcePauseAfterSeek);
+        .seekTo(moment, forcePauseAfterSeek: forcePauseAfterSeek);
 
     _postEvent(BetterPlayerEvent(BetterPlayerEventType.seekTo,
         parameters: <String, dynamic>{_durationParameter: moment}));
