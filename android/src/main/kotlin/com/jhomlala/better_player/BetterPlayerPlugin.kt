@@ -175,6 +175,10 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
                 player.seekTo(location)
                 result.success(null)
             }
+            CANCEL_PENDING_SEEK_METHOD -> {
+                player.cancelPendingSeek()
+                result.success(null)
+            }
             POSITION_METHOD -> {
                 result.success(player.position)
                 player.sendBufferingUpdate(false)
@@ -535,6 +539,7 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
         private const val PLAY_METHOD = "play"
         private const val PAUSE_METHOD = "pause"
         private const val SEEK_TO_METHOD = "seekTo"
+        private const val CANCEL_PENDING_SEEK_METHOD = "cancelPendingSeek"
         private const val POSITION_METHOD = "position"
         private const val ABSOLUTE_POSITION_METHOD = "absolutePosition"
         private const val SET_SPEED_METHOD = "setSpeed"

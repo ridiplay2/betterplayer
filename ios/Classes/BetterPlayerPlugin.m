@@ -395,6 +395,9 @@ bool _remoteCommandsInitialized = false;
         } else if ([@"seekTo" isEqualToString:call.method]) {
             [player seekTo:[argsMap[@"location"] intValue]];
             result(nil);
+        } else if ([@"cancelPendingSeek" isEqualToString:call.method]) {
+            [player cancelPendingSeek];
+            result(nil);
         } else if ([@"pause" isEqualToString:call.method]) {
             [player pause];
             result(nil);

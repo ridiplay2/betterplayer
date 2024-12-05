@@ -562,6 +562,10 @@ internal class BetterPlayer(
         exoPlayer?.seekTo(location.toLong())
     }
 
+    fun cancelPendingSeek() {
+        // no operation for exoplayer. for ios method.
+    }
+
     val position: Long
         get() = exoPlayer?.currentPosition ?: 0L
 

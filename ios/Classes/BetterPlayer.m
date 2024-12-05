@@ -535,6 +535,10 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
     }];
 }
 
+- (void)cancelPendingSeek {
+    [_player cancelPendingSeeks];
+}
+
 - (void)setIsLooping:(bool)isLooping {
     _isLooping = isLooping;
 }
