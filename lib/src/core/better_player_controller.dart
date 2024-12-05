@@ -670,6 +670,10 @@ class BetterPlayerController {
     }
   }
 
+  Future<void> cancelPendingSeek() async {
+    return videoPlayerController?.cancelPendingSeek();
+  }
+
   ///Set volume of player. Allows values from 0.0 to 1.0.
   Future<void> setVolume(double volume) async {
     if (volume < 0.0 || volume > 1.0) {

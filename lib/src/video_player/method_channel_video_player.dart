@@ -200,6 +200,14 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
+  Future<void> cancelPendingSeek(int? textureId) {
+    return _channel.invokeMethod<void>(
+      'cancelPendingSeek',
+      <String, dynamic>{'textureId': textureId},
+    );
+  }
+
+  @override
   Future<Duration> getPosition(int? textureId) async {
     return Duration(
         milliseconds: await _channel.invokeMethod<int>(
