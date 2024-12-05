@@ -644,7 +644,8 @@ class BetterPlayerController {
   }
 
   ///Move player to specific position/moment of the video.
-  Future<void> seekTo(Duration moment, {bool autoPlay = true}) async {
+  Future<void> seekTo(Duration moment,
+      {bool forcePauseAfterSeek = false}) async {
     if (videoPlayerController == null) {
       throw StateError("The data source has not been initialized");
     }
@@ -652,7 +653,8 @@ class BetterPlayerController {
       throw StateError("The video has not been initialized yet.");
     }
 
-    await videoPlayerController!.seekTo(moment, autoPlay: autoPlay);
+    await videoPlayerController!
+        .seekTo(moment, forcePauseAfterSeek: !forcePauseAfterSeek);
 
     _postEvent(BetterPlayerEvent(BetterPlayerEventType.seekTo,
         parameters: <String, dynamic>{_durationParameter: moment}));
