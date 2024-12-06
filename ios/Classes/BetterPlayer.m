@@ -26,7 +26,7 @@ AVPictureInPictureController *_pipController;
     _isInitialized = false;
     _isPlaying = false;
     _disposed = false;
-    _player = [[AVPlayer alloc] init];
+    _player = [[AVPlayer alloc] init]
     _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     ///Fix for loading large videos
     if (@available(iOS 10.0, *)) {
@@ -532,11 +532,12 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
         if (wasPlaying){
             _player.rate = _playerRate;
         }
+        [_player pause];
     }];
 }
 
 - (void)cancelPendingSeek {
-    [_player cancelPendingSeeks];
+    [_player.currentItem cancelPendingSeeks];
 }
 
 - (void)setIsLooping:(bool)isLooping {

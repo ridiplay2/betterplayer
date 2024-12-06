@@ -557,6 +557,10 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
   }
 
+  Future<void> cancelPendingSeek() async {
+    await _videoPlayerPlatform.cancelPendingSeek(_textureId);
+  }
+
   /// Sets the audio volume of [this].
   ///
   /// [volume] indicates a value between 0.0 (silent) and 1.0 (full volume) on a

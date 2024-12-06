@@ -36,7 +36,8 @@ class MockVideoPlayerController extends VideoPlayerController {
   }
 
   @override
-  Future<void> seekTo(Duration? position) async {
+  Future<void> seekTo(Duration? position,
+      {bool forcePauseAfterSeek = false}) async {
     value = value.copyWith(position: position);
   }
 
