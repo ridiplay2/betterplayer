@@ -532,6 +532,7 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
         if (wasPlaying){
             _player.rate = _playerRate;
         }
+        [_player pause];
     }];
 }
 
