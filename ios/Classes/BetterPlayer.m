@@ -526,13 +526,12 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
     }
 
     [_player seekToTime:CMTimeMake(location, 1000)
-        toleranceBefore:CMTimeMake(1, 1)
-         toleranceAfter:CMTimeMake(1, 1)
+        toleranceBefore:kCMTimeZero
+         toleranceAfter:kCMTimeZero
       completionHandler:^(BOOL finished){
         if (wasPlaying){
             _player.rate = _playerRate;
         }
-        [_player pause];
     }];
 }
 
