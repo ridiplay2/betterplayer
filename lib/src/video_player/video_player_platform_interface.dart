@@ -468,6 +468,9 @@ enum VideoEventType {
 
   /// An unknown event has been received.
   unknown,
+
+  /// The seek has been completed
+  seekCompleted,
 }
 
 /// Describes a discrete segment of time within a video using a [start] and

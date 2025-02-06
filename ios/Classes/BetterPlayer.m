@@ -532,6 +532,10 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
         if (wasPlaying){
             _player.rate = _playerRate;
         }
+        
+        if (_eventSink != nil) {
+            _eventSink(@{@"event" : @"seekComplete", @"key" : _key});
+        }
     }];
 }
 
