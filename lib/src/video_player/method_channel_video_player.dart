@@ -417,6 +417,12 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             key: key,
           );
 
+        case 'seekCompleted':
+          return VideoEvent(
+            eventType: VideoEventType.seekCompleted,
+            key: key,
+          );
+
         default:
           return VideoEvent(
             eventType: VideoEventType.unknown,

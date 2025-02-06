@@ -54,6 +54,8 @@ import io.flutter.plugin.common.EventChannel.EventSink
 import androidx.media.session.MediaButtonReceiver
 import androidx.work.Data
 import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.Player.DISCONTINUITY_REASON_SEEK
+import com.google.android.exoplayer2.Player.DiscontinuityReason
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.drm.DrmSessionManagerProvider
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
@@ -452,6 +454,19 @@ internal class BetterPlayer(
         exoPlayer?.setVideoSurface(surface)
         setAudioAttributes(exoPlayer, true)
         exoPlayer?.addListener(object : Player.Listener {
+            override fun onPositionDiscontinuity(
+                oldPosition: Player.PositionInfo,
+                newPosition: Player.PositionInfo,
+                reason: Int
+            ) {
+                if (reason == DISCONTINUITY_REASON_SEEK) {
+                    val event: MutableMap<String, Any?> = HashMap()
+                    event["event"] = "seekCompleted"
+                    eventSink.success(event)
+
+                }
+            }
+
             override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_BUFFERING -> {
