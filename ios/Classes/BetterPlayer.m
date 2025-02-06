@@ -534,7 +534,7 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
         }
         
         if (_eventSink != nil) {
-            _eventSink(@{@"event" : @"seekComplete", @"key" : _key});
+            _eventSink(@{@"event" : @"seekCompleted", @"key" : _key});
         }
     }];
 }
