@@ -1170,6 +1170,9 @@ class BetterPlayerController {
       case VideoEventType.bufferingEnd:
         _postEvent(BetterPlayerEvent(BetterPlayerEventType.bufferingEnd));
         break;
+      case VideoEventType.seekCompleted:
+        _postEvent(BetterPlayerEvent(BetterPlayerEventType.seekCompleted));
+        break;
       default:
 
         ///TODO: Handle when needed
