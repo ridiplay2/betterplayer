@@ -97,6 +97,7 @@ internal class BetterPlayer(
     private val customDefaultLoadControl: CustomDefaultLoadControl =
         customDefaultLoadControl ?: CustomDefaultLoadControl()
     private var lastSendBufferedPosition = 0L
+    private var initSeekPlatformChannelResult: MethodChannel.Result? = null
 
     init {
         val loadBuilder = DefaultLoadControl.Builder()
@@ -130,7 +131,8 @@ internal class BetterPlayer(
         licenseUrl: String?,
         drmHeaders: Map<String, String>?,
         cacheKey: String?,
-        clearKey: String?
+        clearKey: String?,
+        startPositionMs: Int?,
     ) {
         this.key = key
         isInitialized = false
@@ -203,6 +205,11 @@ internal class BetterPlayer(
             exoPlayer?.setMediaSource(mediaSource)
         }
         exoPlayer?.prepare()
+        if (startPositionMs != null && startPositionMs != 0) {
+            initSeekPlatformChannelResult = result
+            seekTo(startPositionMs)
+            return
+        }
         result.success(null)
     }
 
@@ -460,10 +467,15 @@ internal class BetterPlayer(
                 reason: Int
             ) {
                 if (reason == DISCONTINUITY_REASON_SEEK) {
+                    initSeekPlatformChannelResult?.let { result ->
+                        result.success(null)
+                        initSeekPlatformChannelResult = null
+                        return
+                    }
+
                     val event: MutableMap<String, Any?> = HashMap()
                     event["event"] = "seekCompleted"
                     eventSink.success(event)
-
                 }
             }
 
