@@ -356,6 +356,8 @@ bool _remoteCommandsInitialized = false;
             }
             
             if (startPositionMs) {
+                NSLog(@"BetterPlayer startPositionMs is not null, seek to its value: %d", [startPositionMs intValue]);
+
                 [player seekTo:[startPositionMs intValue] withCompletionHandler:^(BOOL finished) {
                     result(nil);
                 }];
