@@ -337,7 +337,7 @@ class DataSource {
         ' $formatHint, asset: $asset, package: $package, headers: $headers,'
         ' useCache: $useCache,maxCacheSize: $maxCacheSize, maxCacheFileSize: '
         '$maxCacheFileSize, showNotification: $showNotification, title: $title,'
-        ' author: $author}';
+        ' author: $author, startPositionMs: $startPositionMs}';
   }
 }
 
