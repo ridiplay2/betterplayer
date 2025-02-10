@@ -320,8 +320,6 @@ bool _remoteCommandsInitialized = false;
             NSNumber* maxCacheSize = dataSource[@"maxCacheSize"];
             NSString* videoExtension = dataSource[@"videoExtension"];
             NSNumber* startPositionMs = dataSource[@"startPositionMs"];
-
-            NSLog(@"BetterPlayer dataSource: %@", dataSource); // 데이터소스 전체 출력            
             
             int overriddenDuration = 0;
             if ([dataSource objectForKey:@"overriddenDuration"] != [NSNull null]){
@@ -358,8 +356,6 @@ bool _remoteCommandsInitialized = false;
             }
             
             if (startPositionMs) {
-                NSLog(@"BetterPlayer startPositionMs is not null, seek to its value: %d", [startPositionMs intValue]);
-
                 [player seekTo:[startPositionMs intValue] withCompletionHandler:^(BOOL finished) {
                     result(nil);
                 }];
