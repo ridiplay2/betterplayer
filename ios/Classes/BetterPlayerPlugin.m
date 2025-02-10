@@ -356,7 +356,7 @@ bool _remoteCommandsInitialized = false;
             }
             
             if (startPositionMs != NULL) {
-                [player seekTo:startPositionMs withCompletionHandler:^(BOOL finished) {
+                [player seekTo:[startPositionMs intValue] withCompletionHandler:^(BOOL finished) {
                     result(nil);
                 }];
                 return;
