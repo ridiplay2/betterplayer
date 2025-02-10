@@ -231,6 +231,7 @@ class DataSource {
     this.activityName,
     this.clearKey,
     this.videoExtension,
+    this.startPositionMs,
   }) : assert(uri == null || asset == null);
 
   /// Describes the type of data source this [VideoPlayerController]
@@ -308,6 +309,8 @@ class DataSource {
   final String? clearKey;
 
   final String? videoExtension;
+
+  final int? startPositionMs;
 
   /// Key to compare DataSource
   String get key {

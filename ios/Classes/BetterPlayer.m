@@ -539,6 +539,30 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
     }];
 }
 
+- (void)seekTo:(int)location withCompletionHandler:(void (^)(BOOL finished))completionHandler {
+    bool wasPlaying = _isPlaying;
+    if (wasPlaying){
+        [_player pause];
+    }
+
+    [_player seekToTime:CMTimeMake(location, 1000)
+        toleranceBefore:kCMTimeZero
+         toleranceAfter:kCMTimeZero
+      completionHandler:^(BOOL finished){
+        if (wasPlaying){
+            _player.rate = _playerRate;
+        }
+        
+        if (_eventSink != nil) {
+            _eventSink(@{@"event" : @"seekCompleted", @"key" : _key});
+        }
+        
+        if (completionHandler) {
+            completionHandler(finished);
+        }
+    }];
+}
+
 - (void)cancelPendingSeek {
     [_player.currentItem cancelPendingSeeks];
 }
