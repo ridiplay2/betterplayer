@@ -231,6 +231,7 @@ class DataSource {
     this.activityName,
     this.clearKey,
     this.videoExtension,
+    this.startPositionMs,
   }) : assert(uri == null || asset == null);
 
   /// Describes the type of data source this [VideoPlayerController]
@@ -309,6 +310,8 @@ class DataSource {
 
   final String? videoExtension;
 
+  final int? startPositionMs;
+
   /// Key to compare DataSource
   String get key {
     String? result = "";
@@ -334,7 +337,7 @@ class DataSource {
         ' $formatHint, asset: $asset, package: $package, headers: $headers,'
         ' useCache: $useCache,maxCacheSize: $maxCacheSize, maxCacheFileSize: '
         '$maxCacheFileSize, showNotification: $showNotification, title: $title,'
-        ' author: $author}';
+        ' author: $author, startPositionMs: $startPositionMs}';
   }
 }
 

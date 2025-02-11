@@ -319,6 +319,7 @@ bool _remoteCommandsInitialized = false;
             NSString* cacheKey = dataSource[@"cacheKey"];
             NSNumber* maxCacheSize = dataSource[@"maxCacheSize"];
             NSString* videoExtension = dataSource[@"videoExtension"];
+            NSNumber* startPositionMs = dataSource[@"startPositionMs"];
             
             int overriddenDuration = 0;
             if ([dataSource objectForKey:@"overriddenDuration"] != [NSNull null]){
@@ -351,7 +352,18 @@ bool _remoteCommandsInitialized = false;
                 [player setDataSourceURL:[NSURL URLWithString:uriArg] withKey:key withCertificateUrl:certificateUrl withLicenseUrl: licenseUrl withHeaders:headers withCache: useCache cacheKey:cacheKey cacheManager:_cacheManager overriddenDuration:overriddenDuration videoExtension: videoExtension];
             } else {
                 result(FlutterMethodNotImplemented);
+                return;
             }
+            
+            if (startPositionMs && [startPositionMs intValue] != 0) {
+                NSLog(@"BetterPlayer startPositionMs is not null, seek to its value: %d", [startPositionMs intValue]);
+
+                [player seekTo:[startPositionMs intValue] withCompletionHandler:^(BOOL finished) {
+                    result(nil);
+                }];
+                return;
+            }
+            
             result(nil);
         } else if ([@"dispose" isEqualToString:call.method]) {
             [player clear];

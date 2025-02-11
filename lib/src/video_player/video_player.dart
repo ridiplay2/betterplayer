@@ -337,6 +337,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     String? activityName,
     String? clearKey,
     String? videoExtension,
+    int? startPositionMs,
   }) {
     return _setDataSource(
       DataSource(
@@ -360,6 +361,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         activityName: activityName,
         clearKey: clearKey,
         videoExtension: videoExtension,
+        startPositionMs: startPositionMs,
       ),
     );
   }
