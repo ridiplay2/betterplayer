@@ -355,13 +355,15 @@ bool _remoteCommandsInitialized = false;
                 return;
             }
             
-            if (startPositionMs && [startPositionMs intValue] != 0) {
-                NSLog(@"BetterPlayer startPositionMs is not null, seek to its value: %d", [startPositionMs intValue]);
-
-                [player seekTo:[startPositionMs intValue] withCompletionHandler:^(BOOL finished) {
-                    result(nil);
-                }];
-                return;
+            if (startPositionMs != [NSNull null] && startPositionMs != nil) {
+                int startPosition = [startPositionMs intValue];
+                if (startPosition != 0) {
+                    NSLog(@"BetterPlayer startPositionMs is not null, seek to its value: %d", startPosition);
+                    [player seekTo:startPosition withCompletionHandler:^(BOOL finished) {
+                        result(nil);
+                    }];
+                    return;
+                }
             }
             
             result(nil);
