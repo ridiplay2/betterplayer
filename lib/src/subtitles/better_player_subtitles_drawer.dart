@@ -57,17 +57,21 @@ class _BetterPlayerSubtitlesDrawerState
         .addListener(_updateState);
 
     _outerTextStyle = TextStyle(
-        fontSize: _configuration!.fontSize,
-        fontFamily: _configuration!.fontFamily,
-        foreground: Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = _configuration!.outlineSize
-          ..color = _configuration!.outlineColor);
+      fontSize: _configuration!.fontSize,
+      fontFamily: _configuration!.fontFamily,
+      fontVariations: _configuration!.fontVariations,
+      foreground: Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = _configuration!.outlineSize
+        ..color = _configuration!.outlineColor,
+    );
 
     _innerTextStyle = TextStyle(
-        fontFamily: _configuration!.fontFamily,
-        color: _configuration!.fontColor,
-        fontSize: _configuration!.fontSize);
+      fontFamily: _configuration!.fontFamily,
+      color: _configuration!.fontColor,
+      fontSize: _configuration!.fontSize,
+      fontVariations: _configuration!.fontVariations,
+    );
 
     super.initState();
   }
