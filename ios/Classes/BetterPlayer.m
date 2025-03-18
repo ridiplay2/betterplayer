@@ -347,7 +347,9 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
             CMTIME_COMPARE_INLINE(_player.currentItem.currentTime, >, kCMTimeZero) && //if video was started
             CMTIME_COMPARE_INLINE(_player.currentItem.currentTime, <, _player.currentItem.duration) && //but not yet finished
             _isPlaying) { //instance variable to handle overall state (changed to YES when user triggers playback)
-            [self handleStalled];
+
+            // Disable stalled check for now because it's causing issues with the video not pausing after close short form.
+            // [self handleStalled];
         }
     }
 
