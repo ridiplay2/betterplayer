@@ -227,6 +227,10 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
                 dispose(player, textureId)
                 result.success(null)
             }
+            CLEAR_METHOD -> {
+                player.clear()
+                result.success(null)
+            }
             else -> result.notImplemented()
         }
     }
@@ -556,5 +560,6 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
         private const val DISPOSE_METHOD = "dispose"
         private const val PRE_CACHE_METHOD = "preCache"
         private const val STOP_PRE_CACHE_METHOD = "stopPreCache"
+        private const val CLEAR_METHOD = "clear"
     }
 }

@@ -626,6 +626,10 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     value = value.copyWith();
   }
 
+  void clear() {
+    _videoPlayerPlatform.clear(_textureId);
+  }
+
   void setAudioTrack(String? name, int? index) {
     _videoPlayerPlatform.setAudioTrack(_textureId, name, index);
   }
