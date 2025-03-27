@@ -176,6 +176,10 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('buildView() has not been implemented.');
   }
 
+  Future<void> clear(int? textureId) {
+    throw UnimplementedError('clear() has not been implemented.');
+  }
+
   // This method makes sure that VideoPlayer isn't implemented with `implements`.
   //
   // See class docs for more details on why implementing this class is forbidden.

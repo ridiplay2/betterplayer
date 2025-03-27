@@ -448,6 +448,14 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     }
   }
 
+  @override
+  Future<void> clear(int? textureId) {
+    return _channel.invokeMethod<void>(
+      'clear',
+      <String, dynamic>{'textureId': textureId},
+    );
+  }
+
   EventChannel _eventChannelFor(int? textureId) {
     return EventChannel('better_player_channel/videoEvents$textureId');
   }

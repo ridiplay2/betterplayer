@@ -764,6 +764,10 @@ internal class BetterPlayer(
         setAudioAttributes(exoPlayer, mixWithOthers)
     }
 
+    fun clear() {
+
+    }
+
     fun dispose() {
         disposeMediaSession()
         disposeRemoteNotifications()
