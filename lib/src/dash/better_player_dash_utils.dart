@@ -55,7 +55,7 @@ class BetterPlayerDashUtils {
       final String? codecs = representation.getAttribute('codecs');
       final String? mimeType = MimeTypes.getMediaMimeType(codecs ?? '');
       tracks.add(BetterPlayerAsmsTrack(
-          id, width, height, bitrate, frameRate, codecs, mimeType));
+          id, width, height, bitrate, frameRate.toDouble(), codecs, mimeType));
     });
 
     return tracks;
