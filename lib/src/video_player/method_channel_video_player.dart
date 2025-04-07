@@ -234,6 +234,16 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
+  Future<Map<String, num>> getPlatformDependentStats(int? textureId) async {
+    return (await _channel.invokeMethod<Map<Object?, Object?>>(
+          'platformDependentStats',
+          <String, dynamic>{'textureId': textureId},
+        ))
+            ?.cast<String, num>() ??
+        {};
+  }
+
+  @override
   Future<void> enablePictureInPicture(int? textureId, double? top, double? left,
       double? width, double? height) async {
     return _channel.invokeMethod<void>(
