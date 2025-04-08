@@ -56,6 +56,7 @@ import androidx.work.Data
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player.DISCONTINUITY_REASON_SEEK
 import com.google.android.exoplayer2.Player.DiscontinuityReason
+import com.google.android.exoplayer2.analytics.PlaybackStatsListener
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.drm.DrmSessionManagerProvider
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
@@ -89,6 +90,7 @@ internal class BetterPlayer(
     private var refreshHandler: Handler? = null
     private var refreshRunnable: Runnable? = null
     private var exoPlayerEventListener: Player.Listener? = null
+    private var exoPlayerStatsListener: PlaybackStatsListener? = null
     private var bitmap: Bitmap? = null
     private var mediaSession: MediaSessionCompat? = null
     private var drmSessionManager: DrmSessionManager? = null
@@ -205,6 +207,13 @@ internal class BetterPlayer(
             exoPlayer?.setMediaSource(mediaSource)
         }
         exoPlayer?.prepare()
+        exoPlayerStatsListener?.let { exoPlayerStatsListener ->
+            exoPlayer?.removeAnalyticsListener(exoPlayerStatsListener)
+        }
+        exoPlayerStatsListener = PlaybackStatsListener(false, null)
+        exoPlayerStatsListener?.let { exoPlayerStatsListener ->
+            exoPlayer?.addAnalyticsListener(exoPlayerStatsListener)
+        }
         if (startPositionMs != null && startPositionMs != 0) {
             initSeekPlatformChannelResult = result
             seekTo(startPositionMs)
@@ -610,6 +619,29 @@ internal class BetterPlayer(
             return exoPlayer?.currentPosition ?: 0L
         }
 
+    val platformDependentStats: HashMap<String, Number>
+        get() {
+            val stats = exoPlayerStatsListener?.getCombinedPlaybackStats()
+            if (stats == null) {
+                return HashMap()
+            }
+            // See: https://github.com/google/ExoPlayer/blob/release-v2/library/core/src/main/java/com/google/android/exoplayer2/analytics/PlaybackStats.java
+            return hashMapOf<String, Number>(
+                "fatalErrorCount" to stats.fatalErrorCount,
+                "fatalErrorPlaybackCount" to stats.fatalErrorPlaybackCount,
+                "maxRebufferTimeMs" to stats.maxRebufferTimeMs,
+                "nonFatalErrorCount" to stats.nonFatalErrorCount,
+                "playbackCount" to stats.playbackCount,
+                "totalAudioUnderruns" to stats.totalAudioUnderruns,
+                "totalDroppedFrames" to stats.totalDroppedFrames,
+                "totalPauseBufferCount" to stats.totalPauseBufferCount,
+                "totalPauseCount" to stats.totalPauseCount,
+                "totalPlayTimeMs" to stats.totalPlayTimeMs,
+                "totalRebufferCount" to stats.totalRebufferCount,
+                "totalSeekCount" to stats.totalSeekCount,
+            )
+        }
+
     private fun sendInitialized() {
         if (isInitialized) {
             val event: MutableMap<String, Any?> = HashMap()
@@ -769,6 +801,9 @@ internal class BetterPlayer(
     }
 
     fun dispose() {
+        exoPlayerStatsListener?.let { exoPlayerStatsListener ->
+            exoPlayer?.removeAnalyticsListener(exoPlayerStatsListener)
+        }
         disposeMediaSession()
         disposeRemoteNotifications()
         if (isInitialized) {

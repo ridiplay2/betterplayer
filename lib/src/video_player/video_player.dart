@@ -4,6 +4,7 @@
 
 // Dart imports:
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player/src/video_player/video_player_platform_interface.dart';
@@ -25,6 +26,7 @@ class VideoPlayerValue {
     this.size,
     this.position = const Duration(),
     this.absolutePosition,
+    this.platformDependentStats = const {},
     this.buffered = const <DurationRange>[],
     this.isPlaying = false,
     this.isLooping = false,
@@ -55,6 +57,9 @@ class VideoPlayerValue {
   ///
   /// Is null when is not available.
   final DateTime? absolutePosition;
+
+  /// Platform-dependent stats.
+  final Map<String, num> platformDependentStats;
 
   /// The currently buffered ranges.
   final List<DurationRange> buffered;
@@ -114,6 +119,7 @@ class VideoPlayerValue {
     Size? size,
     Duration? position,
     DateTime? absolutePosition,
+    Map<String, num>? platformDependentStats,
     List<DurationRange>? buffered,
     bool? isPlaying,
     bool? isLooping,
@@ -128,6 +134,8 @@ class VideoPlayerValue {
       size: size ?? this.size,
       position: position ?? this.position,
       absolutePosition: absolutePosition ?? this.absolutePosition,
+      platformDependentStats:
+          platformDependentStats ?? this.platformDependentStats,
       buffered: buffered ?? this.buffered,
       isPlaying: isPlaying ?? this.isPlaying,
       isLooping: isLooping ?? this.isLooping,
@@ -147,6 +155,7 @@ class VideoPlayerValue {
         'size: $size, '
         'position: $position, '
         'absolutePosition: $absolutePosition, '
+        'platformDependentStats: ${json.encode(platformDependentStats)}, '
         'buffered: [${buffered.join(', ')}], '
         'isPlaying: $isPlaying, '
         'isLooping: $isLooping, '
@@ -479,6 +488,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             return;
           }
           _updatePosition(newPosition, absolutePosition: newAbsolutePosition);
+          await _updateStats();
           if (_seekPosition != null && newPosition != null) {
             final difference =
                 newPosition.inMilliseconds - _seekPosition!.inMilliseconds;
@@ -524,6 +534,13 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return _videoPlayerPlatform.getAbsolutePosition(_textureId);
   }
 
+  Future<Map<String, num>> get platformDependentStats async {
+    if (!value.initialized && _isDisposed) {
+      return {};
+    }
+    return _videoPlayerPlatform.getPlatformDependentStats(_textureId);
+  }
+
   /// Sets the video's current timestamp to be at [moment]. The next
   /// time the video is played it will resume from the given [moment].
   ///
@@ -553,6 +570,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
     await _videoPlayerPlatform.seekTo(_textureId, positionToSeek);
     _updatePosition(position);
+    await _updateStats();
 
     if (forcePauseAfterSeek || !isPlaying) {
       pause();
@@ -613,6 +631,12 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (_seekPosition == null) {
       value = value.copyWith(absolutePosition: absolutePosition);
     }
+  }
+
+  Future<void> _updateStats() async {
+    value = value.copyWith(
+      platformDependentStats: await platformDependentStats,
+    );
   }
 
   Future<bool?> isPictureInPictureSupported() async {

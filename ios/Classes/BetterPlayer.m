@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #import "BetterPlayer.h"
+#include <AVFoundation/AVFoundation.h>
 #import <better_player/better_player-Swift.h>
 
 static void* timeRangeContext = &timeRangeContext;
@@ -518,6 +519,31 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
     }
 
     return [BetterPlayerTimeUtils FLTCMTimeToMillis:(time)];
+}
+
+- (NSDictionary*)platformDependentStats {
+    AVPlayerItemAccessLog *accessLog = [[_player currentItem] accessLog];
+    if (!accessLog) {
+        return @{};
+    }
+    AVPlayerItemAccessLogEvent *lastEvent = [accessLog.events lastObject];
+    if (!lastEvent) {
+        return @{};
+    }
+    // See: https://developer.apple.com/documentation/avfoundation/avplayeritemaccesslogevent
+    return @{
+        @"downloadOverdue": @(lastEvent.downloadOverdue),
+        @"durationWatched": @([BetterPlayerTimeUtils FLTNSTimeIntervalToMillis:(lastEvent.durationWatched)]),
+        @"mediaRequestsWWAN": @(lastEvent.mediaRequestsWWAN),
+        @"numberOfDroppedVideoFrames": @(lastEvent.numberOfDroppedVideoFrames),
+        @"numberOfMediaRequests": @(lastEvent.numberOfMediaRequests),
+        @"numberOfServerAddressChanges": @(lastEvent.numberOfServerAddressChanges),
+        @"numberOfStalls": @(lastEvent.numberOfStalls),
+        @"observedBitrate": @(lastEvent.observedBitrate),
+        @"observedBitrateStandardDeviation": @(lastEvent.observedBitrateStandardDeviation),
+        @"segmentsDownloadedDuration": @([BetterPlayerTimeUtils FLTNSTimeIntervalToMillis:(lastEvent.segmentsDownloadedDuration)]),
+        @"startupTime": @([BetterPlayerTimeUtils FLTNSTimeIntervalToMillis:(lastEvent.startupTime)]),
+    };
 }
 
 - (void)seekTo:(int)location {

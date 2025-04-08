@@ -184,6 +184,7 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
                 player.sendBufferingUpdate(false)
             }
             ABSOLUTE_POSITION_METHOD -> result.success(player.absolutePosition)
+            PLATFORM_DEPENDENT_STATS_METHOD -> result.success(player.platformDependentStats)
             SET_SPEED_METHOD -> {
                 player.setSpeed(call.argument(SPEED_PARAMETER)!!)
                 result.success(null)
@@ -549,6 +550,7 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
         private const val CANCEL_PENDING_SEEK_METHOD = "cancelPendingSeek"
         private const val POSITION_METHOD = "position"
         private const val ABSOLUTE_POSITION_METHOD = "absolutePosition"
+        private const val PLATFORM_DEPENDENT_STATS_METHOD = "platformDependentStats"
         private const val SET_SPEED_METHOD = "setSpeed"
         private const val SET_TRACK_PARAMETERS_METHOD = "setTrackParameters"
         private const val SET_AUDIO_TRACK_METHOD = "setAudioTrack"

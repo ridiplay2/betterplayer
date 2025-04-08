@@ -141,6 +141,11 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('getAbsolutePosition() has not been implemented.');
   }
 
+  Future<Map<String, num>> getPlatformDependentStats(int? textureId) {
+    throw UnimplementedError(
+        'getPlatformDependentStats() has not been implemented.');
+  }
+
   ///Enables PiP mode.
   Future<void> enablePictureInPicture(int? textureId, double? top, double? left,
       double? width, double? height) {
