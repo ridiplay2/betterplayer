@@ -626,10 +626,9 @@ internal class BetterPlayer(
                 return HashMap()
             }
             // See: https://github.com/google/ExoPlayer/blob/release-v2/library/core/src/main/java/com/google/android/exoplayer2/analytics/PlaybackStats.java
-            return hashMapOf<String, Number>(
+            val values = hashMapOf<String, Number>(
                 "fatalErrorCount" to stats.fatalErrorCount,
                 "fatalErrorPlaybackCount" to stats.fatalErrorPlaybackCount,
-                "maxRebufferTimeMs" to stats.maxRebufferTimeMs,
                 "nonFatalErrorCount" to stats.nonFatalErrorCount,
                 "playbackCount" to stats.playbackCount,
                 "totalAudioUnderruns" to stats.totalAudioUnderruns,
@@ -640,6 +639,10 @@ internal class BetterPlayer(
                 "totalRebufferCount" to stats.totalRebufferCount,
                 "totalSeekCount" to stats.totalSeekCount,
             )
+            if (stats.maxRebufferTimeMs != Long.MIN_VALUE) {
+                values["maxRebufferTimeMs"] = stats.maxRebufferTimeMs
+            }
+            return values
         }
 
     private fun sendInitialized() {
