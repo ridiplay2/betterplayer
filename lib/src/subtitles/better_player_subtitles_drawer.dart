@@ -34,6 +34,7 @@ class _BetterPlayerSubtitlesDrawerState
   VideoPlayerValue? _latestValue;
   BetterPlayerSubtitlesConfiguration? _configuration;
   bool _playerVisible = false;
+  String? _currentLanguage;
 
   ///Stream used to detect if play controls are visible or not
   late StreamSubscription _visibilityStreamSubscription;
@@ -56,9 +57,22 @@ class _BetterPlayerSubtitlesDrawerState
     widget.betterPlayerController.videoPlayerController!
         .addListener(_updateState);
 
+    _updateTextStyles();
+
+    super.initState();
+  }
+
+  /// Updates the text styles based on the current language
+  void _updateTextStyles() {
+    _currentLanguage =
+        widget.betterPlayerController.betterPlayerSubtitlesSource?.language;
+    final String fontFamily =
+        _configuration!.languageFonts?[_currentLanguage] ??
+            _configuration!.fontFamily;
+
     _outerTextStyle = TextStyle(
       fontSize: _configuration!.fontSize,
-      fontFamily: _configuration!.fontFamily,
+      fontFamily: fontFamily,
       fontVariations: _configuration!.fontVariations,
       foreground: Paint()
         ..style = PaintingStyle.stroke
@@ -67,13 +81,21 @@ class _BetterPlayerSubtitlesDrawerState
     );
 
     _innerTextStyle = TextStyle(
-      fontFamily: _configuration!.fontFamily,
+      fontFamily: fontFamily,
       color: _configuration!.fontColor,
       fontSize: _configuration!.fontSize,
       fontVariations: _configuration!.fontVariations,
     );
+  }
 
-    super.initState();
+  @override
+  void didUpdateWidget(BetterPlayerSubtitlesDrawer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // If the language has changed, update the text styles
+    if (_currentLanguage !=
+        widget.betterPlayerController.betterPlayerSubtitlesSource?.language) {
+      _updateTextStyles();
+    }
   }
 
   @override
