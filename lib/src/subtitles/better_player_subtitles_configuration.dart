@@ -40,6 +40,9 @@ class BetterPlayerSubtitlesConfiguration {
   ///Font variations of the subtitle
   final List<FontVariation>? fontVariations;
 
+  ///Language-specific font configurations
+  final Map<String, String>? languageFonts;
+
   const BetterPlayerSubtitlesConfiguration({
     this.fontSize = 14,
     this.fontColor = Colors.white,
@@ -53,5 +56,6 @@ class BetterPlayerSubtitlesConfiguration {
     this.alignment = Alignment.center,
     this.backgroundColor = Colors.transparent,
     this.fontVariations,
+    this.languageFonts,
   });
 }
