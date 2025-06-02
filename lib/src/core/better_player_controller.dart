@@ -776,7 +776,8 @@ class BetterPlayerController {
         BetterPlayerEvent(
           BetterPlayerEventType.exception,
           parameters: <String, dynamic>{
-            "exception": currentVideoPlayerValue.errorDescription
+            "exception": currentVideoPlayerValue.errorDescription,
+            "exceptionDetails": currentVideoPlayerValue.errorDetails,
           },
         ),
       );
