@@ -133,7 +133,7 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
                 if (player == null) {
                     result.error(
                         "Unknown textureId",
-                        "No video player associated with texture id $textureId",
+                        "No video player associated with texture id $textureId method ${call.method}",
                         null
                     )
                     return
