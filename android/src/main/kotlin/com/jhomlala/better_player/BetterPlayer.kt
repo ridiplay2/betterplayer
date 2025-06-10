@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.MediaCodecList
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
@@ -62,7 +61,6 @@ import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.drm.DrmSessionManagerProvider
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
 import com.google.android.exoplayer2.trackselection.TrackSelectionOverrides
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
@@ -111,45 +109,14 @@ internal class BetterPlayer(
             this.customDefaultLoadControl.bufferForPlaybackMs,
             this.customDefaultLoadControl.bufferForPlaybackAfterRebufferMs
         )
-//        val preferredMimeType = if (isHevcSupported()) {
-//            "video/hevc"
-//        } else {
-//            "video/avc"
-//        }
-        val preferredMimeType = "video/avc"
-        val parameters = ParametersBuilder(context)
-            .setPreferredVideoMimeType(preferredMimeType)
-            .build()
-        trackSelector.parameters = parameters
-
         loadControl = loadBuilder.build()
         exoPlayer = ExoPlayer.Builder(context)
             .setTrackSelector(trackSelector)
             .setLoadControl(loadControl)
             .build()
-
         workManager = WorkManager.getInstance(context)
         workerObserverMap = HashMap()
         setupVideoPlayer(eventChannel, textureEntry, result)
-    }
-
-    fun isHevcSupported(): Boolean {
-        val codecList = MediaCodecList(MediaCodecList.ALL_CODECS)
-        val codecs = codecList.codecInfos
-        for (codecInfo in codecs) {
-            if (!codecInfo.isEncoder) {
-                val types = codecInfo.supportedTypes
-                for (type in types) {
-                    if (type.equals("video/hevc", ignoreCase = true)) {
-                        // 하드웨어 디코더인지 확인
-                        if (codecInfo.name.startsWith("OMX.") || codecInfo.name.contains("hardware", true)) {
-                            return true
-                        }
-                    }
-                }
-            }
-        }
-        return false
     }
 
     fun setDataSource(
