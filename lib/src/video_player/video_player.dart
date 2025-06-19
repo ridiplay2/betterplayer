@@ -565,6 +565,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// and silently clamped.
   Future<void> seekTo(Duration? position,
       {bool forcePauseAfterSeek = false}) async {
+    if (_isDisposed) return;
     _timer?.cancel();
     bool isPlaying = value.isPlaying;
     final int positionInMs = value.position.inMilliseconds;
@@ -597,6 +598,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   Future<void> cancelPendingSeek() async {
+    if (_isDisposed) return;
     await _videoPlayerPlatform.cancelPendingSeek(_textureId);
   }
 
@@ -629,17 +631,20 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// [height] specifies height of the selected track
   /// [bitrate] specifies bitrate of the selected track
   Future<void> setTrackParameters(int? width, int? height, int? bitrate) async {
+    if (_isDisposed) return;
     await _videoPlayerPlatform.setTrackParameters(
         _textureId, width, height, bitrate);
   }
 
   Future<void> enablePictureInPicture(
       {double? top, double? left, double? width, double? height}) async {
+    if (_isDisposed) return;
     await _videoPlayerPlatform.enablePictureInPicture(
         textureId, top, left, width, height);
   }
 
   Future<void> disablePictureInPicture() async {
+    if (_isDisposed) return;
     await _videoPlayerPlatform.disablePictureInPicture(textureId);
   }
 
@@ -657,6 +662,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   Future<bool?> isPictureInPictureSupported() async {
+    if (_isDisposed) return false;
     if (_textureId == null) {
       return false;
     }
@@ -668,14 +674,17 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   void clear() {
+    if (_isDisposed) return;
     _videoPlayerPlatform.clear(_textureId);
   }
 
   void setAudioTrack(String? name, int? index) {
+    if (_isDisposed) return;
     _videoPlayerPlatform.setAudioTrack(_textureId, name, index);
   }
 
   void setMixWithOthers(bool mixWithOthers) {
+    if (_isDisposed) return;
     _videoPlayerPlatform.setMixWithOthers(_textureId, mixWithOthers);
   }
 
