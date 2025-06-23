@@ -108,7 +108,7 @@ class _BetterPlayerSubtitlesDrawerState
 
   ///Called when player state has changed, i.e. new player position, etc.
   void _updateState() {
-    if (mounted) {
+    if (mounted && !widget.betterPlayerController.isDetachingFromWidget) {
       setState(() {
         _latestValue =
             widget.betterPlayerController.videoPlayerController!.value;

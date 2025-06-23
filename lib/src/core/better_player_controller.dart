@@ -115,6 +115,12 @@ class BetterPlayerController {
   ///Has player been disposed.
   bool _disposed = false;
 
+  /// Flag to indicate if controller is detaching from widget
+  bool _detachingFromWidget = false;
+
+  /// Flag to indicate if controller is detaching from widget
+  bool get isDetachingFromWidget => _detachingFromWidget;
+
   ///Was player playing before automatic pause.
   bool? _wasPlayingBeforePause;
 
